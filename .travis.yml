@@ -12,9 +12,10 @@ script:
   - echo "no tests!"
 
 after_success:
-  - echo "CPU count == `nproc`"
-  - docker --version
-  - docker build -t pykaldi .
-  - docker tag pykaldi $DOCKER_USERNAME/pykaldi
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - cd min
+  - docker build -t $DOCKER_USERNAME/pykaldi:min .
+  - docker push $DOCKER_USERNAME/pykaldi:min
+  - cd ../latest
+  - docker build -t $DOCKER_USERNAME/pykaldi:latest .
   - docker push $DOCKER_USERNAME/pykaldi:latest
