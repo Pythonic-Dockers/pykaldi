@@ -1,6 +1,6 @@
-sudo: required
-
 language: python
+
+os: linux
 
 services:
   - docker
@@ -12,8 +12,9 @@ script:
   - echo "no tests!"
 
 after_success:
+  - echo "CPU count == `nproc`"
   - docker --version
   - docker build -t pykaldi .
-  - docker tag py-poppler $DOCKER_USERNAME/pykaldi
+  - docker tag pykaldi $DOCKER_USERNAME/pykaldi
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - docker push $DOCKER_USERNAME/pykaldi:latest
